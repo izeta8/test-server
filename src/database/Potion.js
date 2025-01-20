@@ -19,7 +19,19 @@ const getPotionById = async (potion_id) => {
   }
 }
 
+const insertPotion = async (newPotion) => {
+  try {
+    const potionToInsert = new Potion(newPotion);
+    const createdPotion = await potionToInsert.save();
+    return createdPotion;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 module.exports = {
   getPotions,
-  getPotionById
+  getPotionById,
+  insertPotion
 }

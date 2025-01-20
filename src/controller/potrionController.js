@@ -30,8 +30,42 @@ const getPotionsById = async (req, res) => {
   }
 }
 
+const insertPotion = async (req, res) => {
+  try {
+    const {body} = req;
+
+    const newPotion = {
+      id: body.id, 
+      name: body.name, 
+      type: body.type, 
+      rarity: body.rarity, 
+      ingredients: body.ingredients, 
+      usage: body.usage, 
+      meta: body.meta, 
+      crafting: body.crafting, 
+      effects: body.effects,
+      image: body.image
+    }
+
+    if (!body.id || !body.name || !body.type || !body.rarity || !body.ingredients || !body.usage || !body.meta || !body.crafting || !body.effects) {
+      res.status(404).send({status: "FAILED", error: "Some data from the potion hasnt been specified."})
+    }
+
+    const insertedPotion = await potionsService.insertPotion(newPotion);
+    
+    if (!insertedPotion) {
+      res.status(404).send({status: "FAILED", error: `Could not insert potion`})
+    }
+    
+    res.status(200).send({status: "OK", data: insertedPotion});
+    
+  } catch (error) {
+    res.status(500).send({status: "FAILED", error: error?.message})
+  }
+}
 
 module.exports = {
   getPotions,
-  getPotionsById
+  getPotionsById,
+  insertPotion
 }
