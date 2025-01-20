@@ -47,10 +47,6 @@ const insertPotion = async (req, res) => {
       image: body.image
     }
 
-    if (!body.id || !body.name || !body.type || !body.rarity || !body.ingredients || !body.usage || !body.meta || !body.crafting || !body.effects) {
-      res.status(404).send({status: "FAILED", error: "Some data from the potion hasnt been specified."})
-    }
-
     const insertedPotion = await potionsService.insertPotion(newPotion);
     
     if (!insertedPotion) {
@@ -90,9 +86,35 @@ const deletePotion = async (req, res) => {
 }
 
 
+const updatePotion = async (req, res) => {
+  
+  try {
+
+    const {body, params: {potionId}} = req;
+
+    if (!potionId) {
+      res.status(404).send({status: "FAILED", error: ":potionId hasnt been specified."})
+    }
+
+    const updatedPotion = await potionsService.updatePotion(potionId, body);
+    
+    if (!updatedPotion) {
+      res.status(404).send({status: "FAILED", error: `Could find potion with id ${potionId}`})
+    }
+    
+    res.status(200).send({status: "OK", data: updatedPotion});
+    
+  } catch (error) {
+    res.status(500).send({status: "FAILED", error: error?.message})
+  }
+
+}
+
+
 module.exports = {
   getPotions,
   getPotionsById,
   insertPotion,
-  deletePotion
+  deletePotion,
+  updatePotion
 }

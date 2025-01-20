@@ -37,9 +37,19 @@ const deletePotion = async (potionId) => {
   }
 }
 
+const updatePotion = async (potionId, newPotion) => {
+  try {
+    const updatedPotion = await potionsDatabase.updatePotionById(potionId, newPotion);
+    return updatedPotion;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getPotions,
   getPotionById,
   insertPotion,
-  deletePotion
+  deletePotion,
+  updatePotion
 }

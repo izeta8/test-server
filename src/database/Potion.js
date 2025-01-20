@@ -43,35 +43,33 @@ const deletePotion = async (potionId) => {
   }
 };
 
-// const updatePlayerByEmail = async (emailFilter, newPlayerData) => {
+const updatePotionById = async (potionId, newPotion) => {
 
-//   try {
+  try {
 
-//     // Find the player by field and update with newPlayer data
-//     const updatedPlayer = await Player.findOneAndUpdate(
-//       { email: emailFilter },     // Filter (find player with this field)
-//       { $set: newPlayerData },  // '$use' is to merge only the specified fields in newPlayer
-//       { new: true }         // Return the updated document
-//     );
+    const updatedPotion = await Potion.findOneAndUpdate(
+      { id: potionId },     // Filter (find player with this field)
+      { $set: newPotion },  // '$use' is to merge only the specified fields
+      { new: true }         // Return the updated document
+    );
 
-//     // If no player is found, you might want to handle it
-//     if (!updatedPlayer) {
-//       console.log(`Player with email ${emailFilter} not found.`);
-//       return null; // Return null if no player is found
-//     }
+    if (!updatedPotion) {
+      console.log(`Potion with id ${potionId} not found.`);
+      return null; 
+    }
 
-//     return updatedPlayer;
+    return updatedPotion;
 
-//   } catch (error) {
-//     console.log(`Error updating player with field ${emailFilter}:`, error);
-//     throw error;
-//   }
-// };
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 module.exports = {
   getPotions,
   getPotionById,
   insertPotion,
-  deletePotion
+  deletePotion,
+  updatePotionById
 }
