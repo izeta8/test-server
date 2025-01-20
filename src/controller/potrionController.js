@@ -64,8 +64,35 @@ const insertPotion = async (req, res) => {
   }
 }
 
+const deletePotion = async (req, res) => {
+
+  try {
+
+    const {params: {potionId}} = req;
+
+    if (!potionId) {
+      res.status(404).send({status: "FAILED", error: "Parameter ':potionId' not specified"})
+    }
+
+    const potion = await potionsService.deletePotion(potionId);
+    
+    if (!potion) {
+      res.status(404).send({status: "FAILED", error: `Can't find potion with id: ${potionId}`});
+      return;
+    }
+    
+    res.status(200).send({status: "OK", data: potion});
+    
+  } catch (error) {
+    res.status(500).send({status: "FAILED", error: error?.message})
+  }
+
+}
+
+
 module.exports = {
   getPotions,
   getPotionsById,
-  insertPotion
+  insertPotion,
+  deletePotion
 }

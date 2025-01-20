@@ -28,8 +28,18 @@ const insertPotion = async (newPotion) => {
   }
 }
 
+const deletePotion = async (potionId) => {
+  try {
+    const deletedPotion = await potionsDatabase.deletePotion(potionId);
+    return deletedPotion;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getPotions,
   getPotionById,
-  insertPotion
+  insertPotion,
+  deletePotion
 }
