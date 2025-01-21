@@ -20,7 +20,8 @@ const getPotionsById = async (req, res) => {
     const potion = await potionsService.getPotionById(potion_id);
     
     if (!potion) {
-      res.status(404).send({status: "FAILED", error: `Can't find potion with id: ${potion_id}`})
+      res.status(404).send({status: "FAILED", error: `Can't find potion with id: ${potion_id}`});
+      return;
     }
     
     res.status(200).send({status: "OK", data: potion});
@@ -51,6 +52,7 @@ const insertPotion = async (req, res) => {
     
     if (!insertedPotion) {
       res.status(404).send({status: "FAILED", error: `Could not insert potion`})
+      return;
     }
     
     res.status(200).send({status: "OK", data: insertedPotion});
@@ -68,6 +70,7 @@ const deletePotion = async (req, res) => {
 
     if (!potionId) {
       res.status(404).send({status: "FAILED", error: "Parameter ':potionId' not specified"})
+      return;
     }
 
     const potion = await potionsService.deletePotion(potionId);
@@ -94,12 +97,14 @@ const updatePotion = async (req, res) => {
 
     if (!potionId) {
       res.status(404).send({status: "FAILED", error: ":potionId hasnt been specified."})
+      return;
     }
 
     const updatedPotion = await potionsService.updatePotion(potionId, body);
     
     if (!updatedPotion) {
       res.status(404).send({status: "FAILED", error: `Could find potion with id ${potionId}`})
+      return;
     }
     
     res.status(200).send({status: "OK", data: updatedPotion});
