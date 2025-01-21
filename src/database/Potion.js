@@ -12,8 +12,8 @@ const getPotions = async () => {
 
 const getPotionById = async (potion_id) => {
   try {
-    const potions = await Potion.find({id: potion_id});
-    return potions;
+    const potion = await Potion.findOne({id: potion_id});
+    return potion;
   } catch (error) {
     throw error;
   }

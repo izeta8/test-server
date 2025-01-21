@@ -19,11 +19,11 @@ const getPotionsById = async (req, res) => {
 
     const potion = await potionsService.getPotionById(potion_id);
     
-    if (potion.length === 0) {
+    if (!potion) {
       res.status(404).send({status: "FAILED", error: `Can't find potion with id: ${potion_id}`})
     }
     
-    res.status(200).send({status: "OK", data: potion[0]});
+    res.status(200).send({status: "OK", data: potion});
     
   } catch (error) {
     res.status(500).send({status: "FAILED", error: error?.message})
