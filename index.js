@@ -2,12 +2,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const mongodbRouter = process.env.CONNECTION_STRING;
 const cors = require('cors');
+const dotenv = require('dotenv');
 
+//Connfigurate enviroment variables
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
+const mongodbRouter = process.env.CONNECTION_STRING;
 
 app.use(bodyParser.json());
 app.use(cors());
