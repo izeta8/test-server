@@ -16,9 +16,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
-const potionRouter = require("./src/routes/potionRoutes");
-app.use("/api/potions", potionRouter);
+const potionRoutes = require("./src/routes/potionRoutes");
+const jwtRoutes = require("./src/routes/jwtRoutes");
 
+app.use("/api/potions", potionRoutes);
+app.use("/api/jwt/", jwtRoutes);
 
 // Start 
 (async() => {
