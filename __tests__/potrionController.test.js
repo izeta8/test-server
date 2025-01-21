@@ -7,6 +7,8 @@ const {
 } = require("../src/controller/potrionController");
 const potionService = require('../src/service/potionService');
 
+const { potionGetMock } = require("../src/mocks/potionMocks")
+
 jest.mock('../src/service/potionService'); // Mock del servicio
 
 describe('Potion Controller', () => {
@@ -32,28 +34,33 @@ describe('Potion Controller', () => {
     });
   });
 
-  describe('getPotionsById', () => {
-    it('should return a potion by ID', async () => {
-      const mockPotion = { id: '1', name: 'Healing Potion' };
-      potionService.getPotionById.mockResolvedValue([mockPotion]);
+    describe('getPotionsById', () => {
+      it('should return a potion by ID', async () => {
 
-      const req = { params: { potion_id: '1' } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        send: jest.fn()
-      };
+        // Mockear la respuesta del service
+        const mockPotion = potionGetMock;
+        potionService.getPotionById.mockResolvedValue(mockPotion);
 
-      await getPotionsById(req, res);
+        // Mockear los objetos request y response del controller
+        const req = { params: { potion_id: 'potion_001' } };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          send: jest.fn()
+        };
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.send).toHaveBeenCalledWith({ status: 'OK', data: mockPotion });
-    });
+        // Llamar al controller.
+        await getPotionsById(req, res);
+
+        // Validar si el mockeo de la respusta del service y lo que ha devuelto el controller es lo mismo.
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.send).toHaveBeenCalledWith({ status: 'OK', data: mockPotion });
+      });
 
     it('should return 404 if potion not found', async () => {
-      potionService.getPotionById.mockResolvedValue([]);
+        potionService.getPotionById.mockResolvedValue(undefined);
 
-      const req = { params: { potion_id: '99' } };
-      const res = {
+        const req = { params: { potion_id: 'potion_001' } };
+        const res = {
         status: jest.fn().mockReturnThis(),
         send: jest.fn()
       };
@@ -63,7 +70,7 @@ describe('Potion Controller', () => {
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.send).toHaveBeenCalledWith({
         status: 'FAILED',
-        error: "Can't find potion with id: 99"
+        error: "Can't find potion with id: potion_001"
       });
     });
   });
